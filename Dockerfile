@@ -67,7 +67,13 @@ RUN cd /tmp/prototool && \
   go install ./cmd/prototool && \
   mv /go/bin/prototool /usr/local/bin/prototool
 
-RUN #upx --lzma /usr/local/bin/*
+RUN mv /usr/local/bin/protoc-gen-swagger /tmp/protoc-gen-swagger && \
+    mv /usr/local/bin/protoc-gen-twirp /tmp/protoc-gen-twirp && \
+    mv /usr/local/bin/protoc-gen-twirp_python /tmp/protoc-gen-twirp_python
+RUN upx --lzma /usr/local/bin/*
+RUN mv /tmp/protoc-gen-swagger /usr/local/bin/protoc-gen-swagger && \
+    mv /tmp/protoc-gen-twirp /usr/local/bin/protoc-gen-twirp && \
+    mv /tmp/protoc-gen-twirp_python /usr/local/bin/protoc-gen-twirp_python
 
 FROM alpine:latest
 
@@ -75,13 +81,7 @@ WORKDIR /work
 
 ENV \
   PROTOTOOL_PROTOC_BIN_PATH=/usr/bin/protoc \
-  PROTOTOOL_PROTOC_WKT_PATH=/usr/include \
-  ALPINE_GRPC_VERSION_PREFIX=php81-pecl \
-  ALPINE_PROTOBUF_VERSION_PREFIX=php81-pecl \
-  GRPC_VERSION=1.45.0 \
-  PROTOBUF_VERSION=3.18.1 \
-  ALPINE_GRPC_VERSION_SUFFIX=r0 \
-  ALPINE_PROTOBUF_VERSION_SUFFIX=r1
+  PROTOTOOL_PROTOC_WKT_PATH=/usr/include
 
 RUN > /etc/apk/repositories && \
   echo 'http://dl-cdn.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories && \
