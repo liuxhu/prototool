@@ -10,7 +10,7 @@ TMP_LIB := $(TMP)/lib
 TMP_VERSIONS := $(TMP)/versions
 TMP_FOSSA_GOPATH := $(TMP)/fossa/go
 
-DOCKER_IMAGE := uber/prototool:latest
+DOCKER_IMAGE := registry.cn-hongkong.aliyuncs.com/poolin/prototool:latest
 DOCKER_RELEASE_IMAGE := golang:1.12.4-stretch
 
 unexport GOPATH
@@ -261,6 +261,10 @@ clean:
 .PHONY: dockerbuild
 dockerbuild:
 	docker build -t $(DOCKER_IMAGE) .
+
+.PHONY: dockerpush
+dockerpush:
+	docker push $(DOCKER_IMAGE)
 
 .PHONY: dockertest
 dockertest:
